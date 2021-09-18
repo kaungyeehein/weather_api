@@ -13,4 +13,8 @@ app.use(express.urlencoded({ extended: true }));
 // API Route
 app.use('/api', require('./api'));
 
-module.exports = app;
+// Start Server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log('Server is listening at port ' + PORT);
+});

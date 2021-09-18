@@ -2,10 +2,10 @@
     "name": "weather-api",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "src/app.js",
     "scripts": {
-        "start": "node index.js",
-        "dev": "nodemon -r dotenv/config index.js"
+        "start": "node src/app.js",
+        "dev": "nodemon -r dotenv/config src/app.js"
     },
     "keywords": [],
     "author": "",
