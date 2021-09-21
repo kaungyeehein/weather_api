@@ -15,8 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 // Home Route
 app.all('/', (req, res) => {
     res.json({
-        'name': 'Weather Service API',
-        'status': 'running'
+        data: {
+            'status': 200,
+            'message': 'Weather Service API'
+        }
     });
 });
 // API Route
@@ -51,7 +53,7 @@ mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
-    console.log('Mongodb: connected...');
+    console.log('Mongodb: connected');
 }).catch(err => {
     console.log('Mongodb: ' + err.message);
 });

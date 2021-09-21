@@ -3,13 +3,18 @@ const mongoose = require('mongoose');
 const createError = require('http-errors');
 const router = express.Router();
 
-const JobFetch = require('../models/jobFetchModel');
+const model = require('../models/jobFetchModel');
 
 // Get all jobs
 router.get('/', async (req, res, next) => {
     try {
-        const results = await JobFetch.find();
-        res.send(results);
+        const result = await model.find();
+        if (!result.length) {
+            throw createError(404, 'Nothing to return');
+        }
+        res.json({
+            'data': result
+        });
     } catch (error) {
         console.log(error.message);
         next(error);
@@ -19,9 +24,13 @@ router.get('/', async (req, res, next) => {
 // Create a job
 router.post('/', async (req, res, next) => {
     try {
-        const jobFetch = new JobFetch(req.body);
-        const result = await jobFetch.save();
-        res.send(result);
+        const job = new model(req.body);
+        const result = await job.save();
+        const fulllUrl = req.protocol + '://' + req.get('host') + req.originalUrl + '/';
+        res.location(fulllUrl + result._id).status(201);
+        res.json({
+            'data': result
+        });
     } catch (error) {
         console.log(error.message);
         if (error.name === 'ValidationError') {
@@ -36,15 +45,17 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
-        const jobFetch = await JobFetch.findById(id);
-        if (!jobFetch) {
-            throw createError(404, 'Job does not exist.');
+        const result = await model.findById(id);
+        if (!result) {
+            throw createError(404, 'Job does not exist');
         }
-        res.send(jobFetch);
+        res.json({
+            'data': result
+        });
     } catch (error) {
         console.log(error.message);
         if (error instanceof mongoose.CastError) {
-            next(createError(400, 'Invalid Job ID.'));
+            next(createError(400, 'Invalid Job ID'));
             return;
         }
         next(error);
@@ -54,18 +65,20 @@ router.get('/:id', async (req, res, next) => {
 // Update a job by id
 router.patch('/:id', async (req, res, next) => {
     const id = req.params.id;
-    const updates = req.body;
+    const update = req.body;
     const options = { new: true };
     try {
-        const jobFetch = await JobFetch.findByIdAndUpdate(id, updates, options);
-        if (!jobFetch) {
-            throw createError(404, 'Job does not exist.');
+        const result = await model.findByIdAndUpdate(id, update, options);
+        if (!result) {
+            throw createError(404, 'Job does not exist');
         }
-        res.send(jobFetch);
+        res.json({
+            'data': result
+        });
     } catch (error) {
         console.log(error.message);
         if (error instanceof mongoose.CastError) {
-            next(createError(400, 'Invalid Job ID.'));
+            next(createError(400, 'Invalid Job ID'));
             return;
         }
         next(error);
@@ -76,15 +89,15 @@ router.patch('/:id', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
-        const jobFetch = await JobFetch.findByIdAndDelete(id);
-        if (!jobFetch) {
-            throw createError(404, 'Job does not exist.');
+        const result = await model.findByIdAndDelete(id);
+        if (!result) {
+            throw createError(404, 'Job does not exist');
         }
-        res.send(jobFetch);
+        res.status(204).end();
     } catch (error) {
         console.log(error.message);
         if (error instanceof mongoose.CastError) {
-            next(createError(400, 'Invalid Job ID.'));
+            next(createError(400, 'Invalid Job ID'));
             return;
         }
         next(error);

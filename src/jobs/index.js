@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.use('/fetch', require('./routes/jobFetchRoute'));
+router.use('/fetchService', require('./routes/jobFetchServiceRoute'));
 
 module.exports = router;
 

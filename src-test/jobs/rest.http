@@ -1,17 +1,6 @@
-### Start Job
-GET http://localhost:3000/jobs/start
-
-### Stop Job
-GET http://localhost:3000/jobs/stop
-
-### Check Job
-GET http://localhost:3000/jobs/check
-
-### Info Job
-GET http://localhost:3000/jobs/info
-
 ################################################################
-
+### Weather API
+################################################################
 ### Home route
 GET http://localhost:3000/
 
@@ -31,22 +20,34 @@ Content-Type: application/json
     "collectionName": "TestCollection5"
 }
 
+### Get a job by id
+GET http://localhost:3000/jobs/fetch/6149e0fc6d3b09bb9fa447c9
+
 ### Update a job by id
-PATCH http://localhost:3000/jobs/fetch/6148b1e02a8968e4d459497b
+PATCH http://localhost:3000/jobs/fetch/6149e0fc6d3b09bb9fa447c9
 Content-Type: application/json
 
 {
-    "collectionName": "TestCollection3"
+    "collectionName": "Changed"
 }
 
 ### Delete a job by id
-DELETE http://localhost:3000/jobs/fetch/6149348b32a080a5d8b0ff92
+DELETE http://localhost:3000/jobs/fetch/6149df99d6b87c912550aef7
 
 ### Start all jobs
-GET http://localhost:3000/jobs/fetch/start
+GET http://localhost:3000/jobs/fetchService/start
+
+### Start a job by id
+GET http://localhost:3000/jobs/fetchService/start/6148ab15cbadf86c7757469c
 
 ### Stop all jobs
-GET http://localhost:3000/jobs/fetch/stop
+GET http://localhost:3000/jobs/fetchService/stop
+
+### Stop a jobs by id
+GET http://localhost:3000/jobs/fetchService/stop/6149acf1aa068011f4030f07
+
+### Get all jobs information
+GET http://localhost:3000/jobs/fetchService/info
 
 ################################################################
 
