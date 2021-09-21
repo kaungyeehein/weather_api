@@ -1,0 +1,98 @@
+### Start Job
+GET http://localhost:3000/jobs/start
+
+### Stop Job
+GET http://localhost:3000/jobs/stop
+
+### Check Job
+GET http://localhost:3000/jobs/check
+
+### Info Job
+GET http://localhost:3000/jobs/info
+
+################################################################
+
+### Home route
+GET http://localhost:3000/
+
+### 404 Test
+GET http://localhost:3000/abc
+
+### Get all Jobs
+GET http://localhost:3000/jobs/fetch
+
+### Create a Job
+POST http://localhost:3000/jobs/fetch
+Content-Type: application/json
+
+{
+    "jobName": "Test Job 5",
+    "fetchEndpoint": "http://localhost:3000/jobs/fetch",
+    "collectionName": "TestCollection5"
+}
+
+### Update a job by id
+PATCH http://localhost:3000/jobs/fetch/6148b1e02a8968e4d459497b
+Content-Type: application/json
+
+{
+    "collectionName": "TestCollection3"
+}
+
+### Delete a job by id
+DELETE http://localhost:3000/jobs/fetch/6149348b32a080a5d8b0ff92
+
+### Start all jobs
+GET http://localhost:3000/jobs/fetch/start
+
+### Stop all jobs
+GET http://localhost:3000/jobs/fetch/stop
+
+################################################################
+
+POST /api/job/once & POST /api/job/every
+Schedule a job for single or multiple occurrences
+{
+    name,           // Name of the type to create the instance from
+    interval,       // Interval in which job should be invoked (human-interval, can also be a date string for 'once')
+    data: {         // (optional) default: {}
+        headers,    // Http headers, e.g. { Authorization: '<token>' }
+        params,     // An object i.e. { param1: 'value1' } used to replace path parameters `http://mydommain.com:3333/test/:param1` => `http://mydommain.com:3333/test/value1` notations in the job definition's url.
+        query,      // An object i.e. { foo: 'bar', baz: 'qux' } used to create query parameters (http://mydommain.com:3333/test/value1?foo=bar&baz=qux)
+        body        // Accompanying data sent along the request
+    },
+    options: { // (optional) Enables passing options to the `every` method in agenda as documented [here](https://github.com/agenda/agenda#repeateveryinterval-options)
+      timezone, // Specify the job execution timezone.
+      skipImmediate // Don't execute job immidiatly default is `false`.
+    }
+}
+Callback, if present, would be invoked by the following object:
+{
+    data: {
+        // passed data object, same as above
+    },
+    response        // response from invocation
+}
+
+POST /api/job/now
+Like once and every, though without interval. Executes the job now.
+
+POST /api/job/cancel
+Cancels (not to be confused with 'delete') any jobs matching the query
+
+############################################################
+
+### Test
+POST http://localhost:3000/test
+Content-Type: application/json
+
+{
+  "name": "iMacPro",
+  "price": 4999
+}
+
+### Test
+POST http://localhost:3000/test
+Content-Type: application/x-www-form-urlencoded
+
+name=iMacPro&price=4999

@@ -11,10 +11,12 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "cron": "^1.8.2",
         "express": "^4.17.1",
+        "http-errors": "^1.8.0",
+        "mongoose": "^6.0.6",
         "morgan": "^1.10.0",
-        "node-fetch": "^2.6.2",
-        "rotating-file-stream": "^2.1.5"
+        "node-fetch": "^2.6.2"
     },
     "devDependencies": {
         "dotenv": "^10.0.0",
