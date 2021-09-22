@@ -3,19 +3,21 @@ const mongoose = require('mongoose');
 const createError = require('http-errors');
 const router = express.Router();
 
-const model = require('../models/jobFetchModel');
+const JobFetch = require('../models/jobFetchModel');
 const worker = require('../workers/jobFetchWorker');
 
 // Start all jobs
 router.get('/start', async (req, res, next) => {
     try {
-        const jobs = await model.find();
+        const jobs = await JobFetch.find();
         if (!jobs.length) {
             throw createError(404, 'Nothing to run');
         }
         // Call Job Worker
-        worker.start(jobs);
-        res.send("All Jobs are started");
+        const results = worker.start(jobs);
+        res.json({
+            'data': results
+        });
     } catch (error) {
         console.log(error.message);
         next(error);
@@ -26,13 +28,15 @@ router.get('/start', async (req, res, next) => {
 router.get('/start/:id', async (req, res, next) => {
     try {
         const id = req.params.id;
-        const job = await model.findById(id);
+        const job = await JobFetch.findById(id);
         if (!job) {
             throw createError(404, 'Job does not exist');
         }
         // Call Job Worker
-        worker.startById(job);
-        res.send("Job is started");
+        const result = worker.startById(job);
+        res.json({
+            'data': result
+        });
     } catch (error) {
         console.log(error.message);
         if (error instanceof mongoose.CastError) {
@@ -47,8 +51,13 @@ router.get('/start/:id', async (req, res, next) => {
 router.get('/stop', async (req, res, next) => {
     try {
         // Call Job Worker
-        worker.stop();
-        res.send("All Jobs are stopped");
+        const results = worker.stop();
+        if (!results.length) {
+            throw createError(404, 'Job is not running');
+        }
+        res.json({
+            'data': results
+        });
     } catch (error) {
         console.log(error.message);
         next(error);
@@ -59,13 +68,18 @@ router.get('/stop', async (req, res, next) => {
 router.get('/stop/:id', async (req, res, next) => {
     try {
         const id = req.params.id;
-        const job = await model.findById(id);
+        const job = await JobFetch.findById(id);
         if (!job) {
             throw createError(404, 'Job does not exist');
         }
         // Call Job Worker
-        worker.stopById(job);
-        res.send("Job is stopped");
+        const result = worker.stopById(job);
+        if (!result) {
+            throw createError(404, 'Job is not running');
+        }
+        res.json({
+            'data': result
+        });
     } catch (error) {
         console.log(error.message);
         if (error instanceof mongoose.CastError) {
@@ -80,8 +94,13 @@ router.get('/stop/:id', async (req, res, next) => {
 router.get('/info', async (req, res, next) => {
     try {
         // Call Job Worker
-        worker.info();
-        res.send("All Jobs info are requested");
+        const results = worker.info();
+        if (!results.length) {
+            throw createError(404, 'Job is nothing');
+        }
+        res.json({
+            'data': results
+        });
     } catch (error) {
         console.log(error.message);
         next(error);

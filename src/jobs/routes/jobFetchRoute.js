@@ -3,17 +3,17 @@ const mongoose = require('mongoose');
 const createError = require('http-errors');
 const router = express.Router();
 
-const model = require('../models/jobFetchModel');
+const JobFetch = require('../models/jobFetchModel');
 
 // Get all jobs
 router.get('/', async (req, res, next) => {
     try {
-        const result = await model.find();
-        if (!result.length) {
+        const jobs = await JobFetch.find();
+        if (!jobs.length) {
             throw createError(404, 'Nothing to return');
         }
         res.json({
-            'data': result
+            'data': jobs
         });
     } catch (error) {
         console.log(error.message);
@@ -24,12 +24,12 @@ router.get('/', async (req, res, next) => {
 // Create a job
 router.post('/', async (req, res, next) => {
     try {
-        const job = new model(req.body);
-        const result = await job.save();
+        const jobFetch = new JobFetch(req.body);
+        const job = await jobFetch.save();
         const fulllUrl = req.protocol + '://' + req.get('host') + req.originalUrl + '/';
-        res.location(fulllUrl + result._id).status(201);
+        res.location(fulllUrl + job._id).status(201);
         res.json({
-            'data': result
+            'data': job
         });
     } catch (error) {
         console.log(error.message);
@@ -45,12 +45,12 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
-        const result = await model.findById(id);
-        if (!result) {
+        const job = await JobFetch.findById(id);
+        if (!job) {
             throw createError(404, 'Job does not exist');
         }
         res.json({
-            'data': result
+            'data': job
         });
     } catch (error) {
         console.log(error.message);
@@ -68,12 +68,12 @@ router.patch('/:id', async (req, res, next) => {
     const update = req.body;
     const options = { new: true };
     try {
-        const result = await model.findByIdAndUpdate(id, update, options);
-        if (!result) {
+        const job = await JobFetch.findByIdAndUpdate(id, update, options);
+        if (!job) {
             throw createError(404, 'Job does not exist');
         }
         res.json({
-            'data': result
+            'data': job
         });
     } catch (error) {
         console.log(error.message);
@@ -89,8 +89,8 @@ router.patch('/:id', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
     const id = req.params.id;
     try {
-        const result = await model.findByIdAndDelete(id);
-        if (!result) {
+        const job = await JobFetch.findByIdAndDelete(id);
+        if (!job) {
             throw createError(404, 'Job does not exist');
         }
         res.status(204).end();

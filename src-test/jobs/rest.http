@@ -1,6 +1,7 @@
-################################################################
+###############################################################################
 ### Weather API
-################################################################
+###############################################################################
+
 ### Home route
 GET http://localhost:3000/
 
@@ -34,54 +35,25 @@ Content-Type: application/json
 ### Delete a job by id
 DELETE http://localhost:3000/jobs/fetch/6149df99d6b87c912550aef7
 
+###############################################################################
+
 ### Start all jobs
 GET http://localhost:3000/jobs/fetchService/start
 
 ### Start a job by id
-GET http://localhost:3000/jobs/fetchService/start/6148ab15cbadf86c7757469c
+GET http://localhost:3000/jobs/fetchService/start/6149e0fc6d3b09bb9fa447c9
 
 ### Stop all jobs
 GET http://localhost:3000/jobs/fetchService/stop
 
 ### Stop a jobs by id
-GET http://localhost:3000/jobs/fetchService/stop/6149acf1aa068011f4030f07
+GET http://localhost:3000/jobs/fetchService/stop/6149e0fc6d3b09bb9fa447c9
 
 ### Get all jobs information
 GET http://localhost:3000/jobs/fetchService/info
 
-################################################################
-
-POST /api/job/once & POST /api/job/every
-Schedule a job for single or multiple occurrences
-{
-    name,           // Name of the type to create the instance from
-    interval,       // Interval in which job should be invoked (human-interval, can also be a date string for 'once')
-    data: {         // (optional) default: {}
-        headers,    // Http headers, e.g. { Authorization: '<token>' }
-        params,     // An object i.e. { param1: 'value1' } used to replace path parameters `http://mydommain.com:3333/test/:param1` => `http://mydommain.com:3333/test/value1` notations in the job definition's url.
-        query,      // An object i.e. { foo: 'bar', baz: 'qux' } used to create query parameters (http://mydommain.com:3333/test/value1?foo=bar&baz=qux)
-        body        // Accompanying data sent along the request
-    },
-    options: { // (optional) Enables passing options to the `every` method in agenda as documented [here](https://github.com/agenda/agenda#repeateveryinterval-options)
-      timezone, // Specify the job execution timezone.
-      skipImmediate // Don't execute job immidiatly default is `false`.
-    }
-}
-Callback, if present, would be invoked by the following object:
-{
-    data: {
-        // passed data object, same as above
-    },
-    response        // response from invocation
-}
-
-POST /api/job/now
-Like once and every, though without interval. Executes the job now.
-
-POST /api/job/cancel
-Cancels (not to be confused with 'delete') any jobs matching the query
-
-############################################################
+###############################################################################
+###############################################################################
 
 ### Test
 POST http://localhost:3000/test
