@@ -1,13 +1,8 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const createError = require('http-errors');
-const morgan = require('morgan');
 
 const app = express();
 
-// Middleware
-// HTTP request logger
-app.use(morgan('common'));
 // HTTP request body parser for JSON and URLencoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -42,18 +37,5 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log('Server is listening at port ' + PORT);
-});
-
-// dbName: 'WeatherAPI'
-mongoose.connect(process.env.MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log('Mongodb: connected');
-}).catch(err => {
-    console.log('Mongodb: ' + err.message);
-});
+// For Testing
+module.exports = app;

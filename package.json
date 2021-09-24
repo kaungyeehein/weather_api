@@ -1,15 +1,11 @@
 {
     "name": "weather-api",
     "version": "1.0.0",
-    "description": "",
-    "main": "src/app.js",
-    "scripts": {
-        "start": "node src/app.js",
-        "dev": "nodemon -r dotenv/config src/app.js"
-    },
+    "description": "Weather API for Myanmar",
+    "main": "server.js",
     "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "author": "kaungyeehein",
+    "license": "MIT",
     "dependencies": {
         "cron": "^1.8.2",
         "express": "^4.17.1",
@@ -20,6 +16,12 @@
     },
     "devDependencies": {
         "dotenv": "^10.0.0",
-        "nodemon": "^2.0.12"
+        "jest": "^27.2.1",
+        "nodemon": "^2.0.12",
+        "supertest": "^6.1.6"
+    },
+    "scripts": {
+        "start": "nodemon -r dotenv/config server.js",
+        "test": "jest --coverage"
     }
 }
