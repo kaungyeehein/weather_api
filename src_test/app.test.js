@@ -14,34 +14,24 @@ afterEach((done) => {
     });
 });
 
-// Home Route Test
-test('GET /', async () => {
-    const result = {
-        status: 200,
-        message: 'Weather Service API'
-    };
-
-    await supertest(app).get('/')
+test('Home Route Test', async () => {
+    await supertest(app)
+        .get('/')
         .expect(200)
         .then((res) => {
             expect(res.body).toHaveProperty('data');
-            expect(res.body.data.status).toBe(result.status);
-            expect(res.body.data.message).toBe(result.message);
+            expect(res.body.data.status).toBe(200);
+            expect(res.body.data.message).toBe('Weather Service API');
         });
 });
 
-// Empty Route Test
-test('GET /xyz', async () => {
-    const error = {
-        status: 404,
-        message: 'Not found'
-    };
-
-    await supertest(app).get('/xyz')
+test('Empty Route Test', async () => {
+    await supertest(app)
+        .get('/xyz')
         .expect(404)
         .then((res) => {
             expect(res.body).toHaveProperty('error');
-            expect(res.body.error.status).toBe(error.status);
-            expect(res.body.error.message).toBe(error.message);
+            expect(res.body.error.status).toBe(404);
+            expect(res.body.error.message).toBe('Not found');
         });
 });

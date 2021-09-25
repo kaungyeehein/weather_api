@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
             'data': jobs
         });
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         next(error);
     }
 });
@@ -24,6 +24,9 @@ router.get('/', async (req, res, next) => {
 // Create a job
 router.post('/', async (req, res, next) => {
     try {
+        if (req.body._id) {
+            throw createError(422, 'Job ID should not include');
+        }
         const jobFetch = new JobFetch(req.body);
         const job = await jobFetch.save();
         const fulllUrl = req.protocol + '://' + req.get('host') + req.originalUrl + '/';
@@ -32,8 +35,8 @@ router.post('/', async (req, res, next) => {
             'data': job
         });
     } catch (error) {
-        console.log(error.message);
-        if (error.name === 'ValidationError') {
+        // console.log(error);
+        if (error.name && error.name === 'ValidationError') {
             next(createError(422, error.message));
             return;
         }
@@ -53,7 +56,7 @@ router.get('/:id', async (req, res, next) => {
             'data': job
         });
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         if (error instanceof mongoose.CastError) {
             next(createError(400, 'Invalid Job ID'));
             return;
@@ -76,7 +79,7 @@ router.patch('/:id', async (req, res, next) => {
             'data': job
         });
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         if (error instanceof mongoose.CastError) {
             next(createError(400, 'Invalid Job ID'));
             return;
@@ -95,7 +98,7 @@ router.delete('/:id', async (req, res, next) => {
         }
         res.status(204).end();
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         if (error instanceof mongoose.CastError) {
             next(createError(400, 'Invalid Job ID'));
             return;

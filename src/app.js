@@ -29,12 +29,30 @@ app.use((req, res, next) => {
 // Default error handler
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
-    res.send({
+    res.json({
         error: {
             status: err.status || 500,
             message: err.message
         }
     });
+
+    // if (err.status) {
+    //     res.status(err.status);
+    //     res.json({
+    //         error: {
+    //             status: err.status,
+    //             message: err.message
+    //         }
+    //     });
+    //     return;
+    // }
+    // res.status(500);
+    // res.json({
+    //     error: {
+    //         status: 500,
+    //         message: 'An unknown error occurred'
+    //     }
+    // });
 });
 
 // For Testing
