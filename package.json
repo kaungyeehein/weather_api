@@ -22,6 +22,6 @@
     },
     "scripts": {
         "start": "nodemon -r dotenv/config server.js",
-        "test": "jest --coverage --testTimeout=10000"
+        "test": "jest --testTimeout=10000"
     }
 }

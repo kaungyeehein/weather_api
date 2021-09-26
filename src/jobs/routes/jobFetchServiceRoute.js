@@ -19,7 +19,7 @@ router.get('/start', async (req, res, next) => {
             'data': results
         });
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         next(error);
     }
 });
@@ -38,7 +38,7 @@ router.get('/start/:id', async (req, res, next) => {
             'data': result
         });
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         if (error instanceof mongoose.CastError) {
             next(createError(400, 'Invalid Job Id'));
             return;
@@ -53,13 +53,13 @@ router.get('/stop', async (req, res, next) => {
         // Call Job Worker
         const results = worker.stop();
         if (!results.length) {
-            throw createError(404, 'Job is not running');
+            throw createError(404, 'Nothing to stop');
         }
         res.json({
             'data': results
         });
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         next(error);
     }
 });
@@ -81,7 +81,7 @@ router.get('/stop/:id', async (req, res, next) => {
             'data': result
         });
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         if (error instanceof mongoose.CastError) {
             next(createError(400, 'Invalid Job Id'));
             return;
@@ -102,7 +102,7 @@ router.get('/info', async (req, res, next) => {
             'data': results
         });
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         next(error);
     }
 });

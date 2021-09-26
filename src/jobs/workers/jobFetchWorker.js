@@ -61,7 +61,7 @@ const info = () => {
 // Get job status (private)
 const status = (id, job) => {
     return {
-        jobId: id,
+        _id: id,
         lastDate: job.lastDate(),
         nextDate: job.nextDates(),
         isRunning: job.running
