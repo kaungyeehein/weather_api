@@ -16,24 +16,25 @@ POST http://localhost:3000/jobs/fetch
 Content-Type: application/json
 
 {
-    "jobName": "Test Job 5",
+    "jobName": "Test Job 6",
+    "cronExpression": "* * * * *",
     "fetchEndpoint": "http://localhost:3000/jobs/fetch",
-    "collectionName": "TestCollection5"
+    "collectionName": "TestCollection6"
 }
 
 ### Get a job by id
 GET http://localhost:3000/jobs/fetch/6149e0fc6d3b09bb9fa447c9
 
 ### Update a job by id
-PATCH http://localhost:3000/jobs/fetch/6149e0fc6d3b09bb9fa447c9
+PATCH http://localhost:3000/jobs/fetch/61507e00c0cb3604be73b0b4
 Content-Type: application/json
 
 {
-    "collectionName": "Changed"
+    "enable": true
 }
 
 ### Delete a job by id
-DELETE http://localhost:3000/jobs/fetch/6149df99d6b87c912550aef7
+DELETE http://localhost:3000/jobs/fetch/614f1bcade2a4cf4be5f65ae
 
 ###############################################################################
 

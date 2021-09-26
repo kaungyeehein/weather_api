@@ -71,6 +71,9 @@ router.patch('/:id', async (req, res, next) => {
     const update = req.body;
     const options = { new: true };
     try {
+        if (req.body._id) {
+            throw createError(422, 'Job ID should not include');
+        }
         const job = await JobFetch.findByIdAndUpdate(id, update, options);
         if (!job) {
             throw createError(404, 'Job does not exist');

@@ -9,7 +9,7 @@ const worker = require('../workers/jobFetchWorker');
 // Start all jobs
 router.get('/start', async (req, res, next) => {
     try {
-        const jobs = await JobFetch.find();
+        const jobs = await JobFetch.find({ enable: true });
         if (!jobs.length) {
             throw createError(404, 'Nothing to run');
         }
@@ -31,6 +31,9 @@ router.get('/start/:id', async (req, res, next) => {
         const job = await JobFetch.findById(id);
         if (!job) {
             throw createError(404, 'Job does not exist');
+        }
+        if (!job.enable) {
+            throw createError(404, 'Job is not enable');
         }
         // Call Job Worker
         const result = worker.startById(job);

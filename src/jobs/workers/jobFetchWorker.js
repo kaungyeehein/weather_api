@@ -17,7 +17,7 @@ const startById = (job) => {
     if (taskList[job._id]) {
         taskList[job._id].start();
     } else {
-        const task = new CronJob('* * * * *', () => {
+        const task = new CronJob(job.cronExpression, () => {
             const date = new Date();
             console.log('onTick:', date, 'jobId:', job._id.toString());
         }, null, true, 'Asia/Yangon');
@@ -62,7 +62,7 @@ const info = () => {
 const status = (id, job) => {
     return {
         _id: id,
-        lastDate: job.lastDate(),
+        lastDate: job.lastDate() || null,
         nextDate: job.nextDates(),
         isRunning: job.running
     };

@@ -82,9 +82,10 @@ describe('Business Test', () => {
 
     beforeEach(async () => {
         await JobFetch.insertMany([
-            { _id: '111111111111111111111111', jobName: 'TestJob1', fetchEndpoint: 'TestEndpoint1', collectionName: 'TestCollection1' },
-            { _id: '222222222222222222222222', jobName: 'TestJob2', fetchEndpoint: 'TestEndpoint2', collectionName: 'TestCollection2' },
-            { _id: '333333333333333333333333', jobName: 'TestJob3', fetchEndpoint: 'TestEndpoint3', collectionName: 'TestCollection3' },
+            { _id: '111111111111111111111111', cronExpression: '* * * * *', jobName: 'TestJob1', fetchEndpoint: 'TestEndpoint1', collectionName: 'TestCollection1', enable: true },
+            { _id: '222222222222222222222222', cronExpression: '*/2 * * * *', jobName: 'TestJob2', fetchEndpoint: 'TestEndpoint2', collectionName: 'TestCollection2', enable: true },
+            { _id: '333333333333333333333333', cronExpression: '*/4 * * * *', jobName: 'TestJob3', fetchEndpoint: 'TestEndpoint3', collectionName: 'TestCollection3', enable: true },
+            { _id: '444444444444444444444444', cronExpression: '*/8 * * * *', jobName: 'TestJob4', fetchEndpoint: 'TestEndpoint4', collectionName: 'TestCollection4', enable: false },
         ]);
     });
 
@@ -270,6 +271,14 @@ describe('Business Test', () => {
         expect(res4.body.data[0]._id).toBe('333333333333333333333333');
         expect(res4.body.data[0].isRunning).toBe(true);
         expect(res4.body.data[0]).toHaveProperty('nextDate');
+    });
+
+    test('Should not START a job (disable)', async () => {
+        const res = await supertest(app).get('/jobs/fetchService/start/444444444444444444444444');
+        expect(res.statusCode).toBe(404);
+        expect(res.body).toHaveProperty('error');
+        expect(res.body.error.status).toBe(404);
+        expect(res.body.error.message).toBe('Job is not enable');
     });
 
 });

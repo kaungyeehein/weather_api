@@ -6,6 +6,10 @@ const JobFetchSchema = new Schema({
         type: String,
         required: true
     },
+    cronExpression: {
+        type: String,
+        required: true
+    },
     fetchEndpoint: {
         type: String,
         required: true
@@ -13,6 +17,11 @@ const JobFetchSchema = new Schema({
     collectionName: {
         type: String,
         required: true
+    },
+    enable: {
+        type: Boolean,
+        required: true,
+        default: true
     },
     __v: {
         type: Number,
